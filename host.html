@@ -17,84 +17,74 @@
       "
     ></div>
   </body>
-  <!-- FILEPATH: /Users/29buksowicz_a/Documents/connection-test/host.html -->
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <meta charset="UTF-8" />
-      <title>Host</title>
-    </head>
-    <body>
-      <script type="module">
-        /**
-         * This script connects to Firebase and updates the cursor position in real-time.
-         * It imports necessary functions from Firebase SDKs and initializes Firebase using the provided configuration.
-         * The script retrieves the cursor document from the Firestore database and updates its position based on mouse movement.
-         * @module Host
-         */
+  <script type="module">
+    /**
+     * This script connects to Firebase and updates the cursor position in real-time.
+     * It imports necessary functions from Firebase SDKs and initializes Firebase using the provided configuration.
+     * The script retrieves the cursor document from the Firestore database and updates its position based on mouse movement.
+     * @module Host
+     */
 
-        const cursor = document.getElementById('cursor');
+    const cursor = document.getElementById('cursor');
 
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js';
-        import {
-          getFirestore,
-          doc,
-          updateDoc,
-          getDoc // Add this import
-        } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js';
+    import {
+      getFirestore,
+      doc,
+      updateDoc,
+      getDoc // Add this import
+    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: 'AIzaSyBqxNROMVEqDfmDTFANNAvn67ypHHP6qZE',
-          authDomain: 'connection-ab597.firebaseapp.com',
-          projectId: 'connection-ab597',
-          storageBucket: 'connection-ab597.appspot.com',
-          messagingSenderId: '858569231555',
-          appId: '1:858569231555:web:54a6c89df2d06774122676',
-          measurementId: 'G-5SLXGW09GD'
-        };
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBqxNROMVEqDfmDTFANNAvn67ypHHP6qZE',
+      authDomain: 'connection-ab597.firebaseapp.com',
+      projectId: 'connection-ab597',
+      storageBucket: 'connection-ab597.appspot.com',
+      messagingSenderId: '858569231555',
+      appId: '1:858569231555:web:54a6c89df2d06774122676',
+      measurementId: 'G-5SLXGW09GD'
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-        const docRef = doc(db, 'cursor-store', 'cursor');
-        getDoc(docRef).then((doc) => {
-          // Use getDoc instead of docRef.get
-          if (doc.exists()) {
-            console.log('Document data:', doc.data());
-            updateDoc(docRef, {
-              x: window.innerWidth / 2,
-              y: window.innerHeight / 2,
-              screenX: window.innerWidth,
-              screenY: window.innerHeight
-            });
-            cursor.style.left = window.innerWidth / 2 + 'px';
-            cursor.style.top = window.innerHeight / 2 + 'px';
-          } else {
-            console.log('No such document!');
-            throw new Error('No such document!');
-          }
+    const docRef = doc(db, 'cursor-store', 'cursor');
+    getDoc(docRef).then((doc) => {
+      // Use getDoc instead of docRef.get
+      if (doc.exists()) {
+        console.log('Document data:', doc.data());
+        updateDoc(docRef, {
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          screenX: window.innerWidth,
+          screenY: window.innerHeight
         });
+        cursor.style.left = window.innerWidth / 2 + 'px';
+        cursor.style.top = window.innerHeight / 2 + 'px';
+      } else {
+        console.log('No such document!');
+        throw new Error('No such document!');
+      }
+    });
 
-        window.addEventListener('mousemove', (e) => {
-          updateDoc(docRef, {
-            x: e.clientX,
-            y: e.clientY
-          });
-          cursor.style.left = e.clientX + 'px';
-          cursor.style.top = e.clientY + 'px';
-        });
+    window.addEventListener('mousemove', (e) => {
+      updateDoc(docRef, {
+        x: e.clientX,
+        y: e.clientY
+      });
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
 
-        window.addEventListener('resize', () => {
-          updateDoc(docRef, {
-            screenX: window.innerWidth,
-            screenY: window.innerHeight
-          });
-        });
-      </script>
-    </body>
-  </html>
+    window.addEventListener('resize', () => {
+      updateDoc(docRef, {
+        screenX: window.innerWidth,
+        screenY: window.innerHeight
+      });
+    });
+  </script>
 </html>
