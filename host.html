@@ -89,10 +89,11 @@
       });
     });
 
-    setInterval(() => {
-      updateDoc(docRef, {
+    setInterval(async () => {
+      await updateDoc(docRef, {
         packetTimestamp: Date.now()
       });
+      console.log('updated!');
     }, 10);
   </script>
 </html>
