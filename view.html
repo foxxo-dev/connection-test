@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ViewTheirCursor</title>
+  </head>
+  <body>
+    <div
+      id="cursor"
+      style="
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+      "
+    ></div>
+  </body>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js';
+    import {
+      getFirestore,
+      doc,
+      getDoc // Add this import
+    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBqxNROMVEqDfmDTFANNAvn67ypHHP6qZE',
+      authDomain: 'connection-ab597.firebaseapp.com',
+      projectId: 'connection-ab597',
+      storageBucket: 'connection-ab597.appspot.com',
+      messagingSenderId: '858569231555',
+      appId: '1:858569231555:web:54a6c89df2d06774122676',
+      measurementId: 'G-5SLXGW09GD'
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+    const docRef = doc(db, 'cursor-store', 'cursor');
+
+    setInterval(updateCursor, 10);
+
+    async function updateCursor() {
+      const documentSnapshot = await getDoc(docRef);
+      const documentData = documentSnapshot.data();
+      const cursor = document.getElementById('cursor');
+      cursor.style.left = documentData.x + 'px';
+      cursor.style.top = documentData.y + 'px';
+    }
+  </script>
+</html>
