@@ -7,6 +7,10 @@
   </head>
   <body>
     <div
+      id="screen"
+      style="border: 1px solid black; position: absolute; left: 0; top: 0"
+    ></div>
+    <div
       id="cursor"
       style="
         position: absolute;
@@ -52,6 +56,10 @@
       const cursor = document.getElementById('cursor');
       cursor.style.left = documentData.x + 'px';
       cursor.style.top = documentData.y + 'px';
+
+      const screen = document.getElementById('screen');
+      screen.style.width = documentData.screenX + 'px';
+      screen.style.height = documentData.screenY + 'px';
     }
   </script>
 </html>
