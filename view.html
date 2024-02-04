@@ -21,6 +21,22 @@
         transition: 100ms linear;
       "
     ></div>
+    <span
+      id="delay_time"
+      style="
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        background-color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+          sans-serif;
+      "
+      >Loading...</span
+    >
   </body>
 
   <script type="module">
@@ -63,6 +79,11 @@
       screen.style.height = documentData.screenY + 'px';
       document.body.style.width = documentData.screenX + 'px';
       document.body.style.height = documentData.screenY + 'px';
+
+      const timeFromPacketTimestamp = Date.now() - documentData.packetTimestamp;
+      document.getElementById(
+        'delay_time'
+      ).innerText = `Delay: ${timeFromPacketTimestamp}ms`;
     }
   </script>
 </html>
