@@ -88,5 +88,11 @@
         screenY: window.innerHeight
       });
     });
+
+    setInterval(() => {
+      updateDoc(docRef, {
+        packetTimestamp: Date.now()
+      });
+    }, 10);
   </script>
 </html>
