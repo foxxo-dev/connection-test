@@ -65,25 +65,38 @@
     const db = getFirestore(app);
     const docRef = doc(db, 'cursor-store', 'cursor');
 
-    setInterval(updateCursor, 10);
+    let previousData = null;
 
     async function updateCursor() {
       const documentSnapshot = await getDoc(docRef);
       const documentData = documentSnapshot.data();
-      const cursor = document.getElementById('cursor');
-      cursor.style.left = documentData.x + 'px';
-      cursor.style.top = documentData.y + 'px';
 
-      const screen = document.getElementById('screen');
-      screen.style.width = documentData.screenX + 'px';
-      screen.style.height = documentData.screenY + 'px';
-      document.body.style.width = documentData.screenX + 'px';
-      document.body.style.height = documentData.screenY + 'px';
+      if (JSON.stringify(documentData) !== JSON.stringify(previousData)) {
+        const cursor = document.getElementById('cursor');
+        cursor.style.left = documentData.x + 'px';
+        cursor.style.top = documentData.y + 'px';
 
-      const timeFromPacketTimestamp = Date.now() - documentData.packetTimestamp;
-      document.getElementById(
-        'delay_time'
-      ).innerText = `Delay: ${timeFromPacketTimestamp}ms`;
+        const screen = document.getElementById('screen');
+        screen.style.width = documentData.screenX + 'px';
+        screen.style.height = documentData.screenY + 'px';
+        document.body.style.width = documentData.screenX + 'px';
+        document.body.style.height = documentData.screenY + 'px';
+
+        const timeFromPacketTimestamp = documentData.packetTimestamp;
+        document.getElementById(
+          'delay_time'
+        ).innerText = `Delay: ${timeFromPacketTimestamp}ms`;
+
+        previousData = documentData;
+      }
     }
+
+    let debounceTimer;
+    function debounceUpdate() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateCursor, 100); // Adjust the delay as needed
+    }
+
+    setInterval(debounceUpdate, 10);
   </script>
 </html>

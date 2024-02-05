@@ -89,11 +89,17 @@
       });
     });
 
+    let lastUpdate = Date.now();
+
     setInterval(async () => {
-      await updateDoc(docRef, {
-        packetTimestamp: Date.now()
-      });
-      console.log('updated!');
+        const currentTime = Date.now();
+        if (currentTime - lastUpdate >= 10) {
+            await updateDoc(docRef, {
+                packetTimestamp: currentTime
+            });
+            console.log('updated!');
+            lastUpdate = currentTime;
+        }
     }, 10);
   </script>
 </html>
